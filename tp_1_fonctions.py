@@ -1,6 +1,8 @@
 import os
-
-
+import pandas
+import csv
+import hashlib
+import bcrypt
 ### création de fichiers ###
 
 def creer_fichier():
@@ -411,4 +413,95 @@ def trier_fichier_rapide():
 
     except Exception as e:
         print(f"Erreur : {e}")
+
+
+
+
+
+def ajouter_utilisateur(nom_utilisateur, mdp_utilisateur, nom_fichier='base_de_donnees.csv'):
+    # Vérifie si l'utilisateur existe déjà
+    with open(nom_fichier, 'r', encoding='utf-8') as fichier:
+        for ligne in fichier:
+            if ligne.strip().startswith(f"'{nom_utilisateur}'"):
+                print('Utilisateur déjà existant.')
+                return
+    with open(nom_fichier, 'a', newline='', encoding='utf-8') as fichier:
+            writer = csv.writer(fichier)
+            writer.writerow([nom_utilisateur, mdp_utilisateur])
+            print(f'Utilisateur {nom_utilisateur} ajouté avec succès.')
+
+
+
+
+
+mots_de_passe = [
+"123456",
+"password",
+"123456789",
+"12345",
+"12345678",
+"qwerty",
+"abc123",
+"password123",
+"123123",
+"welcome",
+"letmein",
+"monkey",
+"1234",
+"1q2w3e4r",
+"iloveyou",
+"123321",
+"qwertyuiop",
+"sunshine",
+"princess",
+"123qwe",
+"qazwsx",
+"trustno1",
+"admin",
+"welcome123",
+"123abc",
+"football",
+"123abc123",
+"qwerty123",
+"letmein123",
+"shadow",
+"1234qwer",
+"password1",
+"1qaz2wsx",
+"qwerty1",
+"superman",
+"12345qwerty",
+"starwars",
+"123qaz",
+"football123",
+"1q2w3e4r5t",
+"freedom",
+"iloveyou123",
+"dragon",
+"abcdef",
+"monkey123",
+]
+
+
+def hash_password(password):
+    salt = bcrypt.gensalt()  # Génère un sel aléatoire
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)  # Hache le mot de passe avec le sel
+    return hashed
+
+
+def check_password_authentification(stored_hash, password):
+    return bcrypt.checkpw(password.encode('utf-8'), stored_hash)  # Vérifie le mot de passe avec le hachage stocké
+
+
+def authenticate_user(nom_utilisateur, mdp_utilisateur, nom_fichier='base_de_donnees.csv'):
+    with open(nom_fichier, 'r', encoding='utf-8') as fichier:
+        for line in fichier:
+            user_info = line.strip().split(',')
+            if user_info[0] == f"'{nom_utilisateur}'":
+                stored_hash = user_info[1]
+                if check_password_authentification(stored_hash, mdp_utilisateur):
+                    print('Authentification réussie.')
+                    return True
+    print('Authentification échouée.')
+    return False
 

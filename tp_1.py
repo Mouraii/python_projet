@@ -1,5 +1,5 @@
 from tp_1_fonctions import *  # Importation des fonctions externes
-
+import tkinter as tk
 
 def menu_selectif():
     while True:

@@ -15,3 +15,5 @@ with open(fichier_csv,'w',newline='', encoding="utf-8") as fichier :
     writer = csv.writer(fichier)
     writer.writerows(data)
 
+
+
