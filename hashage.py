@@ -38,11 +38,6 @@ compromised_hashes = [
     # Ajoutez d'autres hachages compromis ici
 ]
 
-# Fonction pour vérifier si le hachage d'un mot de passe avec sel est compromis
-def check_password_compromised(password: str, salt: str) -> bool:
-    hashed_password = hash_password_with_salt(password, salt)
-    return hashed_password in compromised_hashes
-
 # Exemple d'utilisation
 password_to_check = input("Entrez le mot de passe à vérifier : ")
 
@@ -106,3 +101,6 @@ password = [
 
 
 ajouter_utilisateur('ok', '123456')
+
+
+
